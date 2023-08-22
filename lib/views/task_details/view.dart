@@ -124,7 +124,7 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
       body: isLoading == true
           ? const Center(
               child: CircularProgressIndicator(
-                strokeWidth: 10,
+              strokeWidth: 10,
               color: Colors.pink,
             ))
           : SingleChildScrollView(
@@ -448,31 +448,56 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: MaterialButton(
-                                                  onPressed: () async{
-                                                    if(commentController.text.length<7){
-                                                      GlobalMethods.showErrorDialog(error: 'Comment can\'t be less than 7 characteres', context: context);
-                                                    }else{
-                                                      final generatedId = const Uuid().v4();
-                                                      await FirebaseFirestore.instance.collection('tasks').doc(widget.taskId).update(
-                                                          {'taskComments':FieldValue.arrayUnion([{
-                                                            'userId':widget.uploadedBy,
-                                                            'commentId':generatedId,
-                                                            'name':authorName,
-                                                            'commentBody':commentController.text,
-                                                            'time':Timestamp.now(),
-                                                            'userImageUrl': userImageUrl,
-                                                          }])});
+                                                  onPressed: () async {
+                                                    if (commentController
+                                                            .text.length <
+                                                        7) {
+                                                      GlobalMethods.showErrorDialog(
+                                                          error:
+                                                              'Comment can\'t be less than 7 characteres',
+                                                          context: context);
+                                                    } else {
+                                                      final generatedId =
+                                                          const Uuid().v4();
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection('tasks')
+                                                          .doc(widget.taskId)
+                                                          .update({
+                                                        'taskComments':
+                                                            FieldValue
+                                                                .arrayUnion([
+                                                          {
+                                                            'userId': widget
+                                                                .uploadedBy,
+                                                            'commentId':
+                                                                generatedId,
+                                                            'name': authorName,
+                                                            'commentBody':
+                                                                commentController
+                                                                    .text,
+                                                            'time':
+                                                                Timestamp.now(),
+                                                            'userImageUrl':
+                                                                userImageUrl,
+                                                          }
+                                                        ])
+                                                      });
                                                       await Fluttertoast.showToast(
-                                                          msg: "Task has been uploaded successfully",
-                                                          toastLength: Toast.LENGTH_LONG,
-                                                          gravity: ToastGravity.BOTTOM,
+                                                          msg:
+                                                              "Task has been uploaded successfully",
+                                                          toastLength:
+                                                              Toast.LENGTH_LONG,
+                                                          gravity: ToastGravity
+                                                              .BOTTOM,
                                                           timeInSecForIosWeb: 1,
-                                                          backgroundColor: Colors.pink,
-                                                          textColor: Colors.white,
-                                                          fontSize: 20.0
-                                                      );
+                                                          backgroundColor:
+                                                              Colors.pink,
+                                                          textColor:
+                                                              Colors.white,
+                                                          fontSize: 20.0);
                                                       commentController.clear();
-                                                      setState((){});
+                                                      setState(() {});
                                                     }
                                                   },
                                                   color: Colors.pink.shade700,
@@ -559,36 +584,56 @@ class _TaskDetailsViewState extends State<TaskDetailsView> {
                               height: 30,
                             ),
                             FutureBuilder<DocumentSnapshot>(
-                                future: FirebaseFirestore.instance.collection('tasks').doc(widget.taskId).get(),
-                                builder: (context,snapshot){
-                              if(snapshot.connectionState == ConnectionState.waiting){
-                                return const Center(child: CircularProgressIndicator(color: Colors.pink,strokeWidth: 10,),);
-                              }else{
-                                if(snapshot.data==null){
-                                  return Container();
-                                }
-                              }
-                              return  ListView.separated(
-                                reverse: true,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return CommentWidget(
-                                      commentBody:snapshot.data!['taskComments'][index]['commentBody'] ,
-                                      commenterId: snapshot.data!['taskComments'][index]['userId'],
-                                      commenterName:snapshot.data!['taskComments'][index]['name'] ,
-                                      commentImageUrl: snapshot.data!['taskComments'][index]['userImageUrl'],
-                                      commentId: snapshot.data!['taskComments'][index]['commentId'],
+                                future: FirebaseFirestore.instance
+                                    .collection('tasks')
+                                    .doc(widget.taskId)
+                                    .get(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.pink,
+                                        strokeWidth: 10,
+                                      ),
                                     );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return const Divider(
-                                      thickness: 1,
-                                    );
-                                  },
-                                  itemCount: snapshot.data!['taskComments'].length);
-                            })
-
+                                  } else {
+                                    if (snapshot.data == null) {
+                                      return Container();
+                                    }
+                                  }
+                                  return ListView.separated(
+                                      reverse: true,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return CommentWidget(
+                                          commentBody:
+                                              snapshot.data!['taskComments']
+                                                  [index]['commentBody'],
+                                          commenterId:
+                                              snapshot.data!['taskComments']
+                                                  [index]['userId'],
+                                          commenterName:
+                                              snapshot.data!['taskComments']
+                                                  [index]['name'],
+                                          commentImageUrl:
+                                              snapshot.data!['taskComments']
+                                                  [index]['userImageUrl'],
+                                          commentId:
+                                              snapshot.data!['taskComments']
+                                                  [index]['commentId'],
+                                        );
+                                      },
+                                      separatorBuilder: (context, index) {
+                                        return const Divider(
+                                          thickness: 1,
+                                        );
+                                      },
+                                      itemCount: snapshot
+                                          .data!['taskComments'].length);
+                                })
                           ],
                         ),
                       ),

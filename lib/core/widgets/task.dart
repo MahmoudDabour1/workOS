@@ -25,8 +25,8 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -36,7 +36,11 @@ class _TaskWidgetState extends State<TaskWidget> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  TaskDetailsView(uploadedBy:widget.uploadedBy ,taskId:widget.taskId ,)),
+            MaterialPageRoute(
+                builder: (context) => TaskDetailsView(
+                      uploadedBy: widget.uploadedBy,
+                      taskId: widget.taskId,
+                    )),
           );
         },
         onLongPress: () {
@@ -49,11 +53,16 @@ class _TaskWidgetState extends State<TaskWidget> {
                       onPressed: () {
                         User? user = auth.currentUser;
                         String uid = user!.uid;
-                        if(uid==widget.uploadedBy){
-                          FirebaseFirestore.instance.collection('tasks').doc(widget.taskId).delete();
+                        if (uid == widget.uploadedBy) {
+                          FirebaseFirestore.instance
+                              .collection('tasks')
+                              .doc(widget.taskId)
+                              .delete();
                           Navigator.pop(context);
-                        }else{
-                          GlobalMethods.showErrorDialog(error: 'You don\'t have access to delete this', context: context);
+                        } else {
+                          GlobalMethods.showErrorDialog(
+                              error: 'You don\'t have access to delete this',
+                              context: context);
                         }
                       },
                       child: Row(
@@ -95,8 +104,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             ),
           ),
         ),
-        title: Text(
-            widget.taskTitle,
+        title: Text(widget.taskTitle,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontWeight: FontWeight.bold,

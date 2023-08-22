@@ -5,7 +5,7 @@ import 'package:workos/views/user_state/view.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp();
-  runApp(  MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {

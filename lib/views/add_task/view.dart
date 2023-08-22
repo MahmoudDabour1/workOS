@@ -38,7 +38,7 @@ class _AddTaskViewState extends State<AddTaskView> {
     User? user = auth.currentUser;
     String uid = user!.uid;
     final isValid = formKey.currentState!.validate();
-    FocusScope.of(context).unfocus();
+     FocusScope.of(context).unfocus();
     if (isValid) {
       if(deadlineController.text=='pick up a date'||categoryController.text=='Task Category'){
         GlobalMethods.showErrorDialog(error: 'Please pick up everything', context: context);
