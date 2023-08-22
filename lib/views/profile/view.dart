@@ -12,7 +12,7 @@ import '../../core/services/global_method.dart';
 import '../../core/widgets/drawer.dart';
 import '../user_state/view.dart';
 
-class ProfilemView extends StatefulWidget {
+class ProfileView extends StatefulWidget {
   final String userID;
 
   const ProfileView({Key? key, required this.userID}) : super(key: key);
